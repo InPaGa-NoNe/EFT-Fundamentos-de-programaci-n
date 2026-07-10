@@ -24,20 +24,30 @@ def main():
         'M006': [24990, 3]
         }
 
-        print("""========== MENÚ PRINCIPAL ==========
-        1. Unidades por categoría
-        2. Búsqueda de productos por rango de precio
-        3. Actualizar precio de producto
-        4. Agregar producto
-        5. Eliminar producto
-        6. Salir
-        =====================================""")
+        print("""\n========== MENÚ PRINCIPAL ==========
+1. Unidades por categoría
+2. Búsqueda de productos por rango de precio
+3. Actualizar precio de producto
+4. Agregar producto
+5. Eliminar producto
+6. Salir
+=====================================""")
 
+        opcion = leer_opcion()
+        if opcion == 6:
+            print("Programa finalizado.")
+            break
+        
+        if opcion == 1:
+            categoria = input("Ingrese categoría a consultar: ")
+            unidades_categoria(categoria, productos, stock)
 
+            
 def leer_opcion():
     while True:
         try:        
             opcion = int(input("Ingrese opción: "))
+            print(" ")
             if 1 <= opcion <= 6:
                 return opcion
             else:
@@ -46,4 +56,18 @@ def leer_opcion():
             print("Error. Debe ingresar una opción valida.")
 
 
+def unidades_categoria(categoria, productos, stock):
+    categoria = categoria.lower()
+    total_unidades = 0
 
+    for codigo, info in productos.items():
+        categoria_producto = info[1].lower()
+
+        if categoria_producto == categoria:
+            if codigo in stock:
+                unidades = stock[codigo][1]
+                total_unidades += unidades
+    print(f"\nEl total de unidades disponibles es: {total_unidades}")
+
+
+main()

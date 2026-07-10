@@ -67,6 +67,21 @@ def main():
                 continuar = input("¿Desea actualizar otro precio (s/n)?: ").lower()
                 if continuar != "s":
                     break
+        elif opcion == 4:
+            codigo = input("Ingrese código: ")
+            nombre = input("Ingrese nombre: ")
+            categoria = input("Ingrese categoria: ")
+            marca = input("Ingrese marca: ")
+            peso = float(input("Ingrese peso (kg): "))
+            es_imp = input("¿Es importado? (s/n): ")
+            es_cach = input("¿Es para cachorro? (s/n): ")
+            precio = int(input("Ingrese precio: "))
+            unidades = int(input("Ingrese unidades: "))
+            if (validar_codigo(codigo) and validar_nombre(nombre) and validar_categoria(categoria) and validar_marca(marca) and validar_peso(peso) and validar_si_no(es_imp) and validar_si_no(es_cach) and validar_precio(precio) and validar_unidades(unidades)):
+                if agregar_producto(codigo, nombre, categoria, marca, peso, es_imp, es_cach, precio, unidades):
+                    print("Producto agrgado.")
+            else:
+                print("Datos invalidos o el codigo ya existe.")
 
 def leer_opcion():
     while True:
@@ -122,5 +137,37 @@ def actualizar_precio(codigo, nuevo_precio, stock):
         stock[codigo.upper()][0] = nuevo_precio
         return True
     return False
+
+def agregar_producto(codigo, nombre, categoria, marca, peso, es_imp, es_cach, precio, unidades, productos, stock):
+    imp_bool = True if es_imp.lower() == "s" else False
+    cach_bool = True if es_cach.lower() == "s" else False
+    
+    productos[codigo.upper()] = [nombre, categoria, marca, peso, imp_bool, cach_bool]
+    stock[codigo.upper()] = [precio, unidades]
+    return True
+
+def validar_codigo(codigo, productos):
+    return len(codigo.strip()) > 0 and codigo.upper() not in productos
+
+def validar_nombre(nombre):
+    return len(nombre.strip()) > 0
+
+def validar_categoria(categoria):
+    return len(categoria.strip()) > 0
+
+def validar_marca(marca):
+    return len(marca.strip()) > 0
+
+def validar_peso(peso):
+    return peso > 0
+
+def validar_si_no(valor):
+    return valor.lower() in ["s", "n"]
+
+def validar_precio(precio):
+    return isinstance(precio, int) and precio > 0
+
+def validar_unidades(unidades):
+    return isinstance(unidades, int) and unidades >= 0
 
 main()

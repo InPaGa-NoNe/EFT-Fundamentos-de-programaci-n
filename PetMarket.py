@@ -50,7 +50,24 @@ def main():
             except ValueError:
                 print("Debe ingresar valores enteros.")
 
-            
+        elif opcion == 3:
+            while True:
+                codigo = input("Ingrese código del producto: ")
+                try:
+                    nuevo_precio = int(input("Ingrese nuevo precio: "))
+                    if nuevo_precio > 0:
+                        if actualizar_precio(codigo, nuevo_precio, stock):
+                            print("Precio actulalizado.")
+                        else:
+                            print("El código no existe.")
+                    else:
+                        print("El precio debe ser un numero entero mayor a cero.")
+                except ValueError:
+                    print("Debe ingresar un valor entero para el precio.")
+                continuar = input("¿Desea actualizar otro precio (s/n)?: ").lower()
+                if continuar != "s":
+                    break
+
 def leer_opcion():
     while True:
         try:        
@@ -95,5 +112,15 @@ def busqueda_precio(p_min, p_max, productos, stock):
     else:
         resultados.sort()
         print(f"Los productos encontrados son: {resultados}")
+
+def buscar_codigo(codigo, stock):
+    codigo = codigo.upper()
+    return codigo in stock
+
+def actualizar_precio(codigo, nuevo_precio, stock):
+    if buscar_codigo(codigo, stock):
+        stock[codigo.upper()][0] = nuevo_precio
+        return True
+    return False
 
 main()

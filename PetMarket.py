@@ -83,6 +83,13 @@ def main():
             else:
                 print("Datos invalidos o el codigo ya existe.")
 
+        elif opcion == 5:
+            codigo_eliminar = input("Ingrese el codigo del producto a eliminar: ")
+            if eliminar_producto(codigo_eliminar, productos, stock):
+                print("Producto eliminado.")
+            else:
+                print("El codigo no existe.")
+
 def leer_opcion():
     while True:
         try:        
@@ -138,14 +145,6 @@ def actualizar_precio(codigo, nuevo_precio, stock):
         return True
     return False
 
-def agregar_producto(codigo, nombre, categoria, marca, peso, es_imp, es_cach, precio, unidades, productos, stock):
-    imp_bool = True if es_imp.lower() == "s" else False
-    cach_bool = True if es_cach.lower() == "s" else False
-    
-    productos[codigo.upper()] = [nombre, categoria, marca, peso, imp_bool, cach_bool]
-    stock[codigo.upper()] = [precio, unidades]
-    return True
-
 def validar_codigo(codigo, productos):
     return len(codigo.strip()) > 0 and codigo.upper() not in productos
 
@@ -169,5 +168,22 @@ def validar_precio(precio):
 
 def validar_unidades(unidades):
     return isinstance(unidades, int) and unidades >= 0
+
+def agregar_producto(codigo, nombre, categoria, marca, peso, es_imp, es_cach, precio, unidades, productos, stock):
+    imp_bool = True if es_imp.lower() == "s" else False
+    cach_bool = True if es_cach.lower() == "s" else False
+    
+    productos[codigo.upper()] = [nombre, categoria, marca, peso, imp_bool, cach_bool]
+    stock[codigo.upper()] = [precio, unidades]
+    return True
+
+def eliminar_producto(codigo, productos, stock):
+    if buscar_codigo(codigo, stock):
+        codigo = codigo.upper()
+        del productos[codigo]
+        del stock[codigo]
+        return True
+    
+    return False
 
 main()

@@ -38,9 +38,17 @@ def main():
             print("Programa finalizado.")
             break
         
-        if opcion == 1:
+        elif opcion == 1:
             categoria = input("Ingrese categoría a consultar: ")
             unidades_categoria(categoria, productos, stock)
+        
+        elif opcion == 2:
+            try:
+                p_min = int(input("Ingrese precio mínimo: "))
+                p_max = int(input("Ingrese precio máximo: "))
+                busqueda_precio(p_min, p_max, productos, stock)
+            except ValueError:
+                print("Debe ingresar valores enteros.")
 
             
 def leer_opcion():
@@ -51,9 +59,9 @@ def leer_opcion():
             if 1 <= opcion <= 6:
                 return opcion
             else:
-                print("Error. Debe ingresar una opción valida.")
+                print("Debe ingresar una opción valida.")
         except ValueError:
-            print("Error. Debe ingresar una opción valida.")
+            print("Debe ingresar una opción valida.")
 
 
 def unidades_categoria(categoria, productos, stock):
@@ -69,5 +77,23 @@ def unidades_categoria(categoria, productos, stock):
                 total_unidades += unidades
     print(f"\nEl total de unidades disponibles es: {total_unidades}")
 
+def busqueda_precio(p_min, p_max, productos, stock):
+    if p_min < 0 or p_max < 0 or p_min > p_max:
+        print("Rango de precios inválido.")
+        return 
+    resultados = []
+    for codigo, info in stock.items():
+        precio = info[0] 
+        unidades = info[1]
+
+        if p_min <= precio <= p_max and unidades > 0:
+            nombre = productos[codigo][0]
+            resultados.append(f"{nombre}--{codigo}")
+    
+    if not resultados:
+        print("No hay productos en ese rango de precios.")
+    else:
+        resultados.sort()
+        print(f"Los productos encontrados son: {resultados}")
 
 main()
